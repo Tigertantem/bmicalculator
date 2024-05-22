@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: row;
+            max-width: 800px;
+            width: 100%;
+        }
+        .form-container, .scale-container {
+            flex: 1;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #result span {
+            font-weight: bold;
+        }
+        .indicator {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .underweight {
+            background-color: #f7b731;
+            color: #fff;
+        }
+        .normal {
+            background-color: #20bf6b;
+            color: #fff;
+        }
+        .overweight {
+            background-color: #fa8231;
+            color: #fff;
+        }
+        .obese {
+            background-color: #eb3b5a;
+            color: #fff;
+        }
+        .nutrition {
+            margin-top: 20px;
+        }
+        .nutrition img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .bmi-scale {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .bmi-scale svg {
+            width: 200px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>BMI Calculator</h1>
+            <div class="form-group">
+                <label for="heightType">Height Measurement:</label>
+                <select id="heightType" onchange="toggleHeightFields()">
+                    <option value="cm">Centimeters</option>
+                    <option value="feet">Feet and Inches</option>
+                </select>
+            </div>
+            <div class="form-group" id="heightCmGroup">
+                <label for="heightCm">Height (cm):</label>
+                <input type="number" id="heightCm">
+            </div>
+            <div class="form-group" id="heightFeetGroup" style="display: none;">
+                <label for="heightFeet">Height (feet):</label>
+                <input type="number" id="heightFeet">
+                <label for="heightInches">Height (inches):</label>
+                <input type="number" id="heightInches">
+            </div>
+            <div class="form-group">
+                <label for="weightType">Weight Measurement:</label>
+                <select id="weightType" onchange="toggleWeightFields()">
+                    <option value="kg">Kilograms</option>
+                    <option value="pounds">Pounds</option>
+                </select>
+            </div>
+            <div class="form-group" id="weightKgGroup">
+                <label for="weightKg">Weight (kg):</label>
+                <input type="number" id="weightKg">
+            </div>
+            <div class="form-group" id="weightPoundsGroup" style="display: none;">
+                <label for="weightPounds">Weight (pounds):</label>
+                <input type="number" id="weightPounds">
+            </div>
+            <button onclick="calculateBMI()">Calculate BMI</button>
+            <div id="result"></div>
+        </div>
+        <div class="scale-container">
+            <div class="bmi-scale" id="bmiScale"></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleHeightFields() {
+            const heightType = document.getElementById('heightType').value;
+            if (heightType === 'cm') {
+                document.getElementById('heightCmGroup').style.display = 'block';
+                document.getElementById('heightFeetGroup').style.display = 'none';
+            } else {
+                document.getElementById('heightCmGroup').style.display = 'none';
+                document.getElementById('heightFeetGroup').style.display = 'block';
+            }
+        }
+
+        function toggleWeightFields() {
+            const weightType = document.getElementById('weightType').value;
+            if (weightType === 'kg') {
+                document.getElementById('weightKgGroup').style.display = 'block';
+                document.getElementById('weightPoundsGroup').style.display = 'none';
+            } else {
+                document.getElementById('weightKgGroup').style.display = 'none';
+                document.getElementById('weightPoundsGroup').style.display = 'block';
+            }
+        }
+
+        function calculateBMI() {
+            const heightType = document.getElementById('heightType').value;
+            const weightType = document.getElementById('weightType').value;
+            let heightInMeters;
+            let weightInKg;
+
+            if (heightType === 'cm') {
+                const heightCm = document.getElementById('heightCm').value;
+                heightInMeters = heightCm / 100;
+            } else {
+                const heightFeet = document.getElementById('heightFeet').value;
+                const heightInches = document.getElementById('heightInches').value;
+                heightInMeters = ((+heightFeet * 12) + (+heightInches)) * 0.0254;
+            }
+
+            if (weightType === 'kg') {
+                weightInKg = document.getElementById('weightKg').value;
+            } else {
+                const weightPounds = document.getElementById('weightPounds').value;
+                weightInKg = weightPounds * 0.453592;
+            }
+
+            if (heightInMeters && weightInKg) {
+                const bmi = (weightIn
+Kg / (heightInMeters * heightInMeters)).toFixed(2);
+                let indicatorClass = '';
+                let message = '';
+                let nutritionImage = '';
+
+                if (bmi < 18.5) {
+                    indicatorClass = 'underweight';
+                    message = 'You are underweight. Consider a balanced diet and consult a healthcare provider for advice.';
+                    nutritionImage = 'https://images.unsplash.com/photo-1598970434795-0c54fe7c0646';  // Underweight nutrition image
+                } else if (bmi >= 18.5 && bmi < 24.9) {
+                    indicatorClass = 'normal';
+                    message = 'You have a normal weight. Maintain a healthy lifestyle to keep your BMI in this range.';
+                    nutritionImage = 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd';  // Normal weight nutrition image
+                } else if (bmi >= 25 && bmi < 29.9) {
+                    indicatorClass = 'overweight';
+                    message = 'You are overweight. A balanced diet and regular exercise can help manage your weight.';
+                    nutritionImage = 'https://images.unsplash.com/photo-1543353071-087092ec3934';  // Overweight nutrition image
+                } else {
+                    indicatorClass = 'obese';
+                    message = 'You are obese. It is advisable to consult a healthcare provider for personalized advice.';
+                    nutritionImage = 'https://images.unsplash.com/photo-1576871337632-f8b3b2b5c7a6';  // Obese nutrition image
+                }
+
+                document.getElementById('result').innerHTML = `
+                    <div class="indicator ${indicatorClass}">
+                        <p>Your BMI is <span>${bmi}</span></p>
+                        <p>${message}</p>
+                    </div>
+                    <div class="nutrition">
+                        <h2>Nutrition Advice</h2>
+                        <img src="${nutritionImage}" alt="Nutrition Image">
+                    </div>
+                `;
+
+                updateBMIScale(bmi);
+            } else {
+                alert('Please enter both height and weight.');
+            }
+        }
+
+        function updateBMIScale(bmi) {
+            const scale = document.getElementById('bmiScale');
+            scale.innerHTML = '';
+
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 100 100');
+
+            const createArc = (startAngle, endAngle, color) => {
+                const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+                const startX = 50 + 40 * Math.cos((Math.PI * startAngle) / 180);
+                const startY = 50 - 40 * Math.sin((Math.PI * startAngle) / 180);
+                const endX = 50 + 40 * Math.cos((Math.PI * endAngle) / 180);
+                const endY = 50 - 40 * Math.sin((Math.PI * endAngle) / 180);
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', `M ${startX},${startY} A 40,40 0 ${largeArcFlag},1 ${endX},${endY}`);
+                path.setAttribute('stroke', color);
+                path.setAttribute('stroke-width', '20');
+                path.setAttribute('fill', 'none');
+
+                return path;
+            };
+
+            svg.appendChild(createArc(180, 240, '#f7b731'));  // Underweight
+            svg.appendChild(createArc(240, 300, '#20bf6b'));  // Normal
+            svg.appendChild(createArc(300, 330, '#fa8231'));  // Overweight
+            svg.appendChild(createArc(330, 360, '#eb3b5a'));  // Obese
+
+            const pointerAngle = 180 + (bmi < 18.5 ? 0 : (bmi < 24.9 ? (bmi - 18.5) / (24.9 - 18.5) * 60 : (bmi < 29.9 ? 60 + (bmi - 24.9) / (29.9 - 24.9) * 30 : 90)));
+
+            const pointerX = 50 + 35 * Math.cos((Math.PI * pointerAngle) / 180);
+            const pointerY = 50 - 35 * Math.sin((Math.PI * pointerAngle) / 180);
+
+            const pointer = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            pointer.setAttribute('x1', '50');
+            pointer.setAttribute('y1', '50');
+            pointer.setAttribute('x2', pointerX);
+            pointer.setAttribute('y2', pointerY);
+            pointer.setAttribute('stroke', '#000');
+            pointer.setAttribute('stroke-width', '2');
+
+            svg.appendChild(pointer);
+
+            scale.appendChild(svg);
+        }
+    </script>
+</body>
+</html>
